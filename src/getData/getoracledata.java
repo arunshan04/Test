@@ -50,7 +50,7 @@ public class getoracledata {
 
             Connection conn = DriverManager.getConnection(dbURL,username,password);
             
-            ps=conn.prepareStatement("select * from "+tableName+" "+where);
+            ps=conn.prepareStatement("set SQLFORMAT=JSON; select * from "+tableName+" "+where);
             rs=ps.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
       	  	int columnsNumber = rsmd.getColumnCount();

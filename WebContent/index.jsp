@@ -43,6 +43,93 @@
     <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap-datepicker.css" />
 
     <meta charset="utf-8" />
+
+<style>
+* {box-sizing: border-box}
+
+/* Set height of body and the document to 100% */
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+}
+
+/* Style tab links */
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 16.6%;
+}
+
+.tablink:hover {
+    background-color: #777;
+}
+
+/* Style the tab content (and add height:100% for full page content) */
+.tabcontent {
+    color: black;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+}
+
+            .cellDiv {
+                left: 0px;
+                top: 5px;
+                height: 22px;
+                position: relative;
+                padding: 0;
+                margin-right: -4px;
+                border: 0;
+            }
+            .cellTextRight {
+                position: relative;
+                margin-right: 4px;
+                text-align: right;
+                float: right;
+            }
+            .gradient1 {
+                /* fallback (Opera) */
+                background: #008AEF;
+                /* Mozilla: https://developer.mozilla.org/en/CSS/-moz-linear-gradient */
+                background: -moz-linear-gradient(left, #008AEF, white);
+                /* Chrome, Safari: http://webkit.org/blog/175/introducing-css-gradients/ */
+                background: -webkit-gradient(linear, left top, right top, from(#008AEF), to(white));
+                /* MSIE http://msdn.microsoft.com/en-us/library/ms532997(VS.85).aspx */
+                filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#008AEF', EndColorStr='white', GradientType=1);
+                /*ie8*/
+                -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#008AEF', EndColorStr='white', GradientType=1)";
+                position: absolute;
+                left: -2px;
+                top: -5px;
+                right: 2px;
+                height: 22px;
+                float: left;
+            }
+            .gradient2 {
+                background: #63C384;
+                background: -moz-linear-gradient(left, #63C384 0%, white 100%);
+                background: -webkit-gradient(linear, left top, right top, from(#63C384), to(white));
+                filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#63C384', EndColorStr='white', GradientType=1);
+                -ms-filter: "progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#63C384', EndColorStr='white', GradientType=1)";
+                position: absolute;
+                left: -2px;
+                top: -5px;
+                right: 2px;
+                height: 22px;
+                float: left;
+            }
+
+
+
+</style>
+
    
 </head>
 
@@ -110,14 +197,15 @@
    <small data-localize="dashboard.WELCOME"></small>
 </div>
 
+			<table id="list1"></table>
+			<div id="pager1"></div>
+
 <div class="row">
    <!-- START dashboard main content-->
    <div class="col-lg-11" >
       <!-- START chart-->
       <div class="row">
          <div class="jqgrid-responsive mb-lg">
-			<table id="list1"></table>
-			<div id="pager1"></div>
          </div>
       </div>
       <!-- END chart-->
@@ -157,8 +245,7 @@
 </br>
 
 
-			<table id="list1"></table>
-			<div id="pager1"></div>
+			
 			
 <div class="row">
    <!-- START dashboard main content-->
@@ -166,7 +253,7 @@
       <!-- START chart-->
       <div class="row">
          <div class="jqgrid-responsive mb-lg">
-
+			<table id="list1"></table><div id="pager1"></div>
          </div>
       </div>
       <!-- END chart-->
@@ -174,63 +261,57 @@
    <!-- END dashboard main content-->
 </div>
 
-<div class="row">
-         <div class="col-lg-6">
-            <!-- START widget-->
-            <div class="panel widget">
-               <div class="panel-body">
-                  <div class="clearfix">
-                     <h3 class="pull-left text-muted mt0">DRI Loading </h3>
-                  </div>
-					<table id="dri" float:left;width:50%;></table><div id="dripager"></div>
 
-               </div>
-            </div>
-            <!-- END widget-->
-         </div>
-         <div class="col-lg-6">
-            <!-- START widget-->
-            <div class="panel widget">
-               <div class="panel-body">
-                  <div class="clearfix">
-                     <h3 class="pull-left text-muted mt0">ORP Loading </h3>
-                  </div>
-					<table id="orp" float:left;width:50%;></table><div id="orppager"></div>
+<button class="tablink" onclick="openPage('DRI', this, 'red')" id="defaultOpen">DRI Summary</button>
+<button class="tablink" onclick="openPage('ORP', this, 'green')" >ORP Summary</button>
+<button class="tablink" onclick="openPage('BANK', this, 'blue')">BANK Summary</button>
+<button class="tablink" onclick="openPage('CARDS', this, 'orange')">Cards Summary</button>
+<button class="tablink" onclick="openPage('TableHistory', this, 'orange')">Table Loading Status</button>
+<button class="tablink" onclick="openPage('Failiures', this, 'orange')">Batch Issues</button>
 
-               </div>
-            </div>
-            <!-- END widget-->
-         </div>
+<div id="DRI" class="tabcontent">
+  <table id="dri"></table><div id="dripager"></div>
 </div>
 
-<div class="row">
-         <div class="col-lg-6">
-            <!-- START widget-->
-            <div class="panel widget">
-               <div class="panel-body">
-                  <div class="clearfix">
-                     <h3 class="pull-left text-muted mt0">BANK Loading </h3>
-                  </div>
-					<table id="bank" float:left;width:50%;></table><div id="bankpager"></div>
-
-               </div>
-            </div>
-            <!-- END widget-->
-         </div>
-         <div class="col-lg-6">
-            <!-- START widget-->
-            <div class="panel widget">
-               <div class="panel-body">
-                  <div class="clearfix">
-                     <h3 class="pull-left text-muted mt0">CARDS Loading </h3>
-                  </div>
-					<table id="cards" float:left;width:50%;></table><div id="cardspager"></div>
-
-               </div>
-            </div>
-            <!-- END widget-->
-         </div>
+<div id="ORP" class="tabcontent">
+  <table id="orp"></table><div id="orppager"></div>
 </div>
+
+<div id="BANK" class="tabcontent">
+  <table id="bank"></table><div id="bankpager"></div>
+</div>
+
+<div id="CARDS" class="tabcontent">
+  <table id="cards"></table><div id="cardspager"></div>
+</div>
+
+<div id="Failiures" class="tabcontent">
+  <table id="failiures"></table><div id="failpager"></div>
+</div>
+
+<div id="TableHistory" class="tabcontent">
+  <table id="tablehistory"></table><div id="thpager"></div>
+</div>
+
+<script>
+function openPage(pageName,elmnt,color) {
+	color="green";
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablink")	;
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+    }
+    document.getElementById(pageName).style.display = "block";
+    elmnt.style.backgroundColor = color;
+
+}
+// Get the element with id="defaultOpen" and click on it
+document.getElementById("defaultOpen").click();
+</script>
 
          </div>
       </section>
@@ -242,10 +323,6 @@
 
         <script type="text/javascript">
         
-	    drawCharts([],'DRI Summary Grid','piechartDri');
-	    drawCharts([],'ORP Summary Grid','piechartOrp');
-	    drawCharts([],'BANK Summary Grid','piechartBank');
-	    drawCharts([],'CARDS Summary Grid','piechartCards');
 	    
 	    
             var country_code = function(countryname) {
@@ -294,7 +371,6 @@
                     rowList: [10, 20, 30],
                     loadonce: !0,
                     hidegrid: !0,
-                    caption: 'DWH/BI Batch Status',
                     jsonReader: {
                         repeatitems: false
                     },
@@ -308,6 +384,10 @@
                     onSelectRow: function(ids) {
                         if (ids != null) {
                             var selRowArr = $("#list1").jqGrid('getGridParam', 'selrow');
+                            drawCharts([],'DRI Summary Grid','piechartDri','#dri');
+        				    drawCharts([],'ORP Summary Grid','piechartOrp','#orp');
+        				    drawCharts([],'BANK Summary Grid','piechartBank','#bank');
+        				    drawCharts([],'CARDS Summary Grid','piechartCards','#cards');
                             jQuery("#dri").jqGrid("clearGridData");
                             jQuery("#orp").jqGrid("clearGridData");
                             jQuery("#bank").jqGrid("clearGridData");
@@ -353,15 +433,15 @@
             				
         					
             				if ((((module[1]!=[prev_m]  ) && (prev_m != "")) || ( (module[0]!=prev_b) && (prev_b !="")))){
-            					status="Pending";
-            					if (pending==0 && failiure ==0){status="Completed"};
+            					module_status="Pending";
+            					if (pending==0 && failiure ==0){module_status="Completed"};
             					switch (prev_b){
-            					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-            					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-            					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-            					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-            					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-            					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+            					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+            					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+            					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+            					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+            					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
             					};
             					
             					success=0;failiure=0;pending=0;start="";end="";prev_start="";prev_end="";
@@ -373,11 +453,11 @@
             					default: pending+=1;break;
             				};
             				
-            				if ((start < prev_start) || (prev_start=="")){
+            				if (((start < prev_start) && (start !="")) || (prev_start=="")){
             					prev_start=start;
             				};
             				
-            				if ((end < prev_end) || (prev_end=="")){
+            				if (((end < prev_end) && (end !="")) || (prev_end=="")){
             					prev_end=end;
             				}
             				
@@ -386,15 +466,15 @@
             			}
             			
             			if (prev_b!=""){
-        					status="Pending";
-        					if (pending==0 && failiure ==0){status="Completed"};
+        					module_status="Pending";
+        					if (pending==0 && failiure ==0){module_status="Completed"};
         					switch (prev_b){
-        					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-        					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-        					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-        					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-        					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
-        					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+        					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+        					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+        					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+        					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
+        					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":prev_start,"End":prev_end,"status":module_status});break;
         					};
         				
 
@@ -410,18 +490,18 @@
 				    var cards_data = {"page": "1","total":Math.ceil(CARDS.length/10),"records":CARDS.length ,"rows": CARDS};
 				    
 				    
-				    drawCharts(DRI,'DRI Summary Grid','piechartDri');
-				    drawCharts(ORP,'ORP Summary Grid','piechartOrp');
-				    drawCharts(BANK,'BANK Summary Grid','piechartBank');
-				    drawCharts(CARDS,'CARDS Summary Grid','piechartCards');
+				    drawCharts(DRI,'DRI Summary Grid','piechartDri','#dri');
+				    drawCharts(ORP,'ORP Summary Grid','piechartOrp','#orp');
+				    drawCharts(BANK,'BANK Summary Grid','piechartBank','#bank');
+				    drawCharts(CARDS,'CARDS Summary Grid','piechartCards','#cards');
 
 
 				    
 					CreateJQGrid(dri_data,orp_data,bank_data,cards_data);
 					$('#dri').setGridParam({ datastr: dri_data, datatype:'jsonstring', rowNum: dri_data.length }).trigger('reloadGrid');
-					$('#orp').setGridParam({ datastr: dri_data, datatype:'jsonstring', rowNum: dri_data.length }).trigger('reloadGrid');
-					$('#bank').setGridParam({ datastr: dri_data, datatype:'jsonstring', rowNum: dri_data.length }).trigger('reloadGrid');
-					$('#cards').setGridParam({ datastr: dri_data, datatype:'jsonstring', rowNum: dri_data.length }).trigger('reloadGrid');
+					$('#orp').setGridParam({ datastr: orp_data, datatype:'jsonstring', rowNum: orp_data.length }).trigger('reloadGrid');
+					$('#bank').setGridParam({ datastr: bank_data, datatype:'jsonstring', rowNum: bank_data.length }).trigger('reloadGrid');
+					$('#cards').setGridParam({ datastr: cards_data, datatype:'jsonstring', rowNum: cards_data.length }).trigger('reloadGrid');
 
 
 
@@ -446,6 +526,7 @@
                         pager: jQuery('#dripager'),
                         rowNum: 15,
                         height:'auto',
+                        width:1500,
                         rowList: [10, 20, 30],
                         viewrecords: true,
                         sortname: 'MODULE',
@@ -477,11 +558,11 @@
                         pager: jQuery('#orppager'),
                         loadonce: true,
                         rowNum: 10,
-                        height: '255',
+                        height:'auto',
+                        width:1500,
                         rowList: [10, 20, 30],
                         sortname: 'MODULE',
                         sortorder: 'desc',
-                        caption:'ORP Grid Summary',
                         viewrecords: true,
                         gridview: true,
                         rownumbers: true, // show row numbers
@@ -504,10 +585,11 @@
                         pager: jQuery('#bankpager'),
                         loadonce: true,
                         rowNum: 13,
+                        height:'auto',
+                        width:1500,
                         rowList: [10, 20, 30],
                         sortname: 'MODULE',
                         sortorder: 'desc',
-                        caption:'Banks Grid Summary',
                         viewrecords: true,
                         gridview: true,
                         rownumbers: true, // show row numbers
@@ -531,10 +613,10 @@
                         loadonce: true,
                         rowNum: 10,
                         height:'auto',
+                        width:1500,
                         rowList: [10, 20, 30],
                         sortname: 'MODULE',
                         sortorder: 'desc',
-                        caption:'Cards Grid Summary',
                         viewrecords: true,
                         gridview: true,
                         rownumbers: true, // show row numbers
@@ -544,7 +626,7 @@
             		
             	};
             	
-            	function drawCharts(Data,myTitle,elementId){
+            	function drawCharts(Data,myTitle,elementId,grid){
             		
             		var percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[Data]);    
             	      google.charts.load('current', {'packages':['corechart']});
@@ -572,6 +654,9 @@
             	            case 'Failiure':filtered = alasql('SELECT * FROM ? WHERE Failiure > 0  ',[Data]);break;
             	            };
             	            
+            	            $(grid).setGridParam({ datastr: filtered, datatype:'jsonstring', rowNum: filtered.length }).trigger('reloadGrid');
+            	            
+
 
             	          }
             	        } 
