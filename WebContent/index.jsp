@@ -86,7 +86,6 @@
          </li>
          <li class="">
             <a href="/widgets" title="Widgets">
-               <div class="label label-success pull-right">30</div>
                <em class="icon-grid"></em>
                <span data-localize="sidebar.nav.WIDGETS">Widgets</span>
             </a>
@@ -243,10 +242,10 @@
 
         <script type="text/javascript">
         
-	    drawCharts(100,0,0,'DRI Summary Grid','piechartDri');
-	    drawCharts(100,0,0,'ORP Summary Grid','piechartOrp');
-	    drawCharts(100,0,0,'BANK Summary Grid','piechartBank');
-	    drawCharts(100,0,0,'CARDS Summary Grid','piechartCards');
+	    drawCharts([],'DRI Summary Grid','piechartDri');
+	    drawCharts([],'ORP Summary Grid','piechartOrp');
+	    drawCharts([],'BANK Summary Grid','piechartBank');
+	    drawCharts([],'CARDS Summary Grid','piechartCards');
 	    
 	    
             var country_code = function(countryname) {
@@ -354,15 +353,15 @@
             				
         					
             				if ((((module[1]!=[prev_m]  ) && (prev_m != "")) || ( (module[0]!=prev_b) && (prev_b !="")))){
+            					status="Pending";
+            					if (pending==0 && failiure ==0){status="Completed"};
             					switch (prev_b){
-            					case 'DRI':
-            						DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});
-            						break;
-            					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-            					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-            					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-            					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-            					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
+            					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+            					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
             					};
             					
             					success=0;failiure=0;pending=0;start="";end="";prev_start="";prev_end="";
@@ -387,13 +386,15 @@
             			}
             			
             			if (prev_b!=""){
+        					status="Pending";
+        					if (pending==0 && failiure ==0){status="Completed"};
         					switch (prev_b){
-        					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-        					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-        					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-        					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-        					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
-        					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end});break;
+        					case 'DRI':DRI.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					case 'D':D.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					case 'CARDS':CARDS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					case 'BANK':BANK.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					case 'ORP':ORP.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
+        					default:OTHERS.push({ "MODULE": prev_m, "Success": success,"Failiure":failiure,"Pending":pending,"Start":start,"End":end,"status":status});break;
         					};
         				
 
@@ -409,15 +410,10 @@
 				    var cards_data = {"page": "1","total":Math.ceil(CARDS.length/10),"records":CARDS.length ,"rows": CARDS};
 				    
 				    
-				    var dri_percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[DRI]);
-				    var orp_percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[ORP]);
-				    var bank_percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[BANK]);
-				    var cards_percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[CARDS]);
-
-				    drawCharts(dri_percent[0]["Success"],dri_percent[0]["Failiure"],dri_percent[0]["Pending"],'DRI Summary Grid','piechartDri');
-				    drawCharts(orp_percent[0]["Success"],orp_percent[0]["Failiure"],orp_percent[0]["Pending"],'ORP Summary Grid','piechartOrp');
-				    drawCharts(bank_percent[0]["Success"],bank_percent[0]["Failiure"],bank_percent[0]["Pending"],'BANK Summary Grid','piechartBank');
-				    drawCharts(cards_percent[0]["Success"],cards_percent[0]["Failiure"],cards_percent[0]["Pending"],'CARDS Summary Grid','piechartCards');
+				    drawCharts(DRI,'DRI Summary Grid','piechartDri');
+				    drawCharts(ORP,'ORP Summary Grid','piechartOrp');
+				    drawCharts(BANK,'BANK Summary Grid','piechartBank');
+				    drawCharts(CARDS,'CARDS Summary Grid','piechartCards');
 
 
 				    
@@ -446,7 +442,7 @@
                             {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'Start',index: 'Start',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'End',index: 'End',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
-                            {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
+                            {name: 'status',index: 'status',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
                         pager: jQuery('#dripager'),
                         rowNum: 15,
                         height:'auto',
@@ -457,7 +453,13 @@
                         rownumbers: true, // show row numbers
                         rownumWidth: 25, // the width of the row numbers columns
                         multiselect: false,
-                        multiboxonly: false
+                        multiboxonly: false,
+                        footerrow: true,
+                        loadComplete: function () {
+                            $(this).jqGrid('footerData','set',
+                                {name:'TOTAL', num:"500", debit:"<i>Bla</i> Bla",
+                                credit:'20', balance:'<span style="color:red">-1000</span>'});
+                        }
                     }).jqGrid('navGrid', '#dripager', {refresh: true,edit: false,add: false,del: false,search: true});
                     
                     
@@ -471,7 +473,7 @@
                             {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'Start',index: 'Start',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'End',index: 'End',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
-                            {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
+                            {name: 'status',index: 'status',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
                         pager: jQuery('#orppager'),
                         loadonce: true,
                         rowNum: 10,
@@ -498,7 +500,7 @@
                             {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'Start',index: 'Start',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'End',index: 'End',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
-                            {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
+                            {name: 'status',index: 'status',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
                         pager: jQuery('#bankpager'),
                         loadonce: true,
                         rowNum: 13,
@@ -524,7 +526,7 @@
                             {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'Start',index: 'Start',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
                             {name: 'End',index: 'End',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'},
-                            {name: 'Success',index: 'Success',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
+                            {name: 'status',index: 'status',width: 100,editable: false,sortable: true,align: 'center',sorttype: 'text'}],
                         pager: jQuery('#cardspager'),
                         loadonce: true,
                         rowNum: 10,
@@ -542,20 +544,44 @@
             		
             	};
             	
-            	function drawCharts(completed,failiure,pending,myTitle,elementId){
+            	function drawCharts(Data,myTitle,elementId){
+            		
+            		var percent = alasql('SELECT  sum(Success) AS Success, sum(Pending) as Pending,sum(Failiure) as Failiure FROM ?',[Data]);    
             	      google.charts.load('current', {'packages':['corechart']});
             	      google.charts.setOnLoadCallback(drawChart);
             	      function drawChart() {
             	        var data = google.visualization.arrayToDataTable([
             	          ['Progress ', 'Completion %'],
-            	          ['Completed',     completed],
-            	          ['Failiure',      failiure],
-            	          ['Pending',  pending]
+            	          ['Success',     percent[0]["Success"]],
+            	          ['Failiure',      percent[0]["Failiure"]],
+            	          ['Pending',  percent[0]["Pending"]]
             	        ]);
             	        var options = {title: myTitle};
             	        var chart = new google.visualization.PieChart(document.getElementById(elementId));
+            	        
+            	        function selectHandler() 
+            	        {
+            	      		var selectedItem = chart.getSelection()[0];
+            	          if (selectedItem) 
+            	          {
+            	            var topping = data.getValue(selectedItem.row, 0);
+            	            
+            	            switch (topping){
+            	            case 'Pending':filtered = alasql('SELECT * FROM ? WHERE Pending > 0  ',[Data]);break;
+            	            case 'Success':filtered = alasql('SELECT * FROM ? WHERE Success > 0  ',[Data]);break;
+            	            case 'Failiure':filtered = alasql('SELECT * FROM ? WHERE Failiure > 0  ',[Data]);break;
+            	            };
+            	            
+
+            	          }
+            	        } 
+
+
+            	       google.visualization.events.addListener(chart, 'select', selectHandler); 
+            	       
             	        chart.draw(data, options);
             	      }
+            	      
             	}
             	
             	
